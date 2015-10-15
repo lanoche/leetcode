@@ -1,0 +1,93 @@
+public class Solution {
+    public int lengthOfLongestSubstring(String s) {
+       if(s.length()==1){
+    		return 1;
+    	}
+        //位置i的元素下一次出现的位置
+        int[] Inext = new int[s.length()];
+        //从位置i起最长的无重复长度
+        int[] ImaxLen = new int[s.length()];
+        //判断i之后首次出现的位置
+        for(int i=0;i<s.length();i++){
+            int point = s.indexOf(s.charAt(i),i+1);
+            if(point==-1){
+                Inext[i]=s.length();
+            }else{
+                Inext[i]=point;
+            }
+        }
+        //求从i起最长无重复的长度
+       
+        for(int i=0;i<s.length();i++){
+        	int min=Inext[i];
+        	for(int j=i;j<s.length();j++){
+        	  	if(min>Inext[j]){
+            		min=Inext[j];
+            	}
+        	  	ImaxLen[i]=min;
+        	}
+        }
+        //ImaxLen中最大的就是所要的结果
+        int result=0;
+        for(int i=0;i<s.length()-1;i++){
+            if(result<ImaxLen[i]-i){
+            	result=ImaxLen[i]-i;
+            }
+        }
+        return result;
+    }
+}
+
+
+//2次修改
+ public int lengthOfLongestSubstring(String s) {
+       if(s.length()==0){
+    		return 0;
+    	}
+    	Set<Character> set = new HashSet<Character>();
+    	int maxLen = 0;
+    	int i = 0;
+    	while(true){
+    		if(!set.contains(s.charAt(i))){
+    			set.add(s.charAt(i));
+    			i++;
+    			if(maxLen<set.size()){
+    				maxLen=set.size();
+    			}
+    		}else{
+    			//记录此时set的长度，也就是现在没有重复字符串的长度
+    			s = s.substring(s.indexOf(s.charAt(i))+1);
+    			i=0;
+    			set.removeAll(set);
+    		}
+    	    if(i==s.length()){
+    	        break;
+    	    }
+    	}
+
+
+
+//3次修改abcbfg
+public static int lengthOfLongestSubstring(String s) {
+    	Set<Character> set = new HashSet<Character>();
+    	int maxLen = 0;
+    	int q = 0;
+    	int i=0;
+    	while(q<s.length()){
+    		if(!set.contains(s.charAt(q))){
+    			set.add(s.charAt(q));
+    			q++;
+    			if(maxLen<set.size()){
+    				maxLen=set.size();
+    			}
+    		}else{
+    			while (set.contains(s.charAt(q))) {
+    				set.remove(s.charAt(i++));
+    			}
+    		}
+    	}
+    	return maxLen;
+    }
+
+    	return maxLen;
+    }
